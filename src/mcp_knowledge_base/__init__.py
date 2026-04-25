@@ -10,6 +10,10 @@ Public API:
     IngestRouter, make_ingest_endpoint
         Plug points for the domain's /ingest payload handling.
 
+    KnowledgeReporter
+        Client-side fire-and-forget POSTer for sending tool-call summaries
+        from a sibling build/control MCP into /ingest.
+
     tag_key, tag_flags, upsert_chunks, sanitize_for_id, now_iso
         Chunk-handling primitives shared across every knowledge domain.
 
@@ -27,13 +31,15 @@ from .chunks import (
 )
 from .format import format_get_results, format_query_results
 from .ingest import IngestRouter, make_ingest_endpoint
+from .reporter import KnowledgeReporter
 from .service import KnowledgeService, ServiceConfig
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "KnowledgeService",
     "ServiceConfig",
+    "KnowledgeReporter",
     "IngestRouter",
     "make_ingest_endpoint",
     "tag_key",

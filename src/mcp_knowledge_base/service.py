@@ -80,6 +80,35 @@ class ServiceConfig:
         default_factory=lambda: {"hnsw:space": "cosine"}
     )
 
+    @classmethod
+    def from_env(
+        cls,
+        name: str,
+        collection_name: str,
+        port: int = 5174,
+        **kwargs: Any,
+    ) -> "ServiceConfig":
+        """Build a config with env-var overrides applied.
+
+        Reads ``$PORT`` and ``$COLLECTION_NAME`` over the supplied defaults.
+        Other fields pass through ``**kwargs`` unchanged. Use this in
+        ``mcp-service.py`` to remove the boilerplate at the top of every
+        sibling repo::
+
+            svc = KnowledgeService(ServiceConfig.from_env(
+                name="pygame-knowledge",
+                collection_name="pygame_knowledge",
+                port=5174,
+                header_keys=["project", "module", "class_name", "func_name"],
+            ))
+        """
+        return cls(
+            name=name,
+            collection_name=os.environ.get("COLLECTION_NAME", collection_name),
+            port=int(os.environ.get("PORT", str(port))),
+            **kwargs,
+        )
+
 
 class KnowledgeService:
     """ChromaDB + FastMCP + /ingest, packaged as one runnable unit."""
