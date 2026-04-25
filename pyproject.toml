@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-knowledge-base"
+version = "0.1.0"
+description = "Shared FastMCP + ChromaDB scaffolding for RAG-backed knowledge MCP services."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Jason Uithol"}]
+keywords = ["mcp", "fastmcp", "chromadb", "rag", "knowledge"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: POSIX :: Linux",
+]
+dependencies = [
+    "chromadb>=0.5",
+    "fastmcp>=2.0",
+    "starlette>=0.37",
+    "uvicorn>=0.30",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://github.com/jasonuithol/mcp-knowledge-base"
+Issues = "https://github.com/jasonuithol/mcp-knowledge-base/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_knowledge_base"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/mcp_knowledge_base",
+    "tests",
+    "README.md",
+    "pyproject.toml",
+]
