@@ -22,6 +22,9 @@ Public API:
         on KnowledgeService delegate to these.
 """
 
+# Eager imports: light-weight modules used by both server and client sides.
+# Heavy server-only modules (service, ingest) are lazy-loaded below so that
+# reporter-only consumers don't have to install chromadb/fastmcp/starlette.
 from .chunks import (
     now_iso,
     sanitize_for_id,
@@ -30,11 +33,23 @@ from .chunks import (
     upsert_chunks,
 )
 from .format import format_get_results, format_query_results
-from .ingest import IngestRouter, make_ingest_endpoint
 from .reporter import KnowledgeReporter
-from .service import KnowledgeService, ServiceConfig
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
+
+
+def __getattr__(name: str):
+    # PEP 562 lazy attribute access — defers chromadb/starlette imports until
+    # someone actually reaches for the server-side classes.
+    if name in ("KnowledgeService", "ServiceConfig"):
+        from .service import KnowledgeService, ServiceConfig
+
+        return {"KnowledgeService": KnowledgeService, "ServiceConfig": ServiceConfig}[name]
+    if name in ("IngestRouter", "make_ingest_endpoint"):
+        from .ingest import IngestRouter, make_ingest_endpoint
+
+        return {"IngestRouter": IngestRouter, "make_ingest_endpoint": make_ingest_endpoint}[name]
+    raise AttributeError(f"module 'mcp_knowledge_base' has no attribute {name!r}")
 
 __all__ = [
     "KnowledgeService",
