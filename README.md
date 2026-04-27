@@ -2,12 +2,13 @@
 
 Shared FastMCP + ChromaDB scaffolding for RAG-backed knowledge MCP services.
 
-Extracted from three sibling projects (`claude-sandbox`, `claude-pygame`,
-`claude-dosre`) which had each grown a near-identical `mcp-knowledge`
-service. ~80% of `mcp-service.py` and the tag/upsert helpers in
-`chunker.py` were mechanical duplication. This package owns the shared
-parts so each domain only carries genuinely domain-specific code: its
-chunker, its tag taxonomy, and any bespoke MCP tools.
+Extracted from three legacy sibling projects (`claude-sandbox`,
+`claude-pygame`, `claude-dosre` — all archived) which had each grown a
+near-identical `mcp-knowledge` service. ~80% of `mcp-service.py` and the
+tag/upsert helpers in `chunker.py` were mechanical duplication. This
+package owns the shared parts so each domain (now `mcp-pygame`,
+`mcp-valheim`, `mcp-dosre`) only carries genuinely domain-specific code:
+its chunker, its tag taxonomy, and any bespoke MCP tools.
 
 ## What's in here
 
